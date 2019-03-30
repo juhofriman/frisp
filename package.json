@@ -1,0 +1,17 @@
+{
+  "name": "jsisp",
+  "version": "0.0.1",
+  "description": "It's a LISP in javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "lisp"
+  ],
+  "author": "Juho Friman <juho.t.friman@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^24.5.0"
+  }
+}
