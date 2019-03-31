@@ -17,9 +17,22 @@ rl.on('close', () => {
 });
 
 function prompt() {
-  rl.question('jsisp> ', (cmd) => {
-    const res = e(parser.parseString(cmd), rootScope);
-    console.log(res);
+
+    rl.question('jsisp> ', (cmd) => {
+      try {
+        if(cmd.startsWith('tokenize ')) {
+          console.log(parser.tokenize(cmd.substring('tokenize '.length)));
+        } else if(cmd.startsWith('parse ')) {
+          console.log(JSON.stringify(parser.parseString(cmd.substring('parse '.length)), null, 2));
+        } else {
+          const res = e(parser.parseString(cmd), rootScope);
+          console.log(res);
+        }
+      } catch(err) {
+        console.log(err);
+      }
+
+
     prompt();
   });
 }
