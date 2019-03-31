@@ -36,10 +36,12 @@ function lookup(currentScope, ref) {
 
 }
 
-function evaluate(p) {
-  const rootScope = scope();
+function evaluate(p, currentScope) {
+  if(!currentScope) {
+      currentScope = scope();
+  }
   const results  = p.map(line => {
-    const [first, ...rest] = line.map((line) => lookup(rootScope, line));
+    const [first, ...rest] = line.map((line) => lookup(currentScope, line));
     return first.apply(this, rest);
   });
 
