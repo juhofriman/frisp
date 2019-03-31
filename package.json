@@ -4,7 +4,8 @@
   "description": "It's a LISP in javascript",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "repl": "node src/repl.js"
   },
   "keywords": [
     "lisp"

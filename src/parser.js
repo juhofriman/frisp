@@ -83,6 +83,7 @@ function parse(tokenStream) {
 }
 
 module.exports = {
+  parseString: (str) => parse(tokenize(str)),
   parse: parse,
   tokenize: tokenize,
   paired: paired,

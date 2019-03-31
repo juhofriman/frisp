@@ -1,7 +1,7 @@
-const scope = {};
+const scope = require('./scope');
 
 
-function lookup(ref) {
+function lookup(currentScope, ref) {
   if(Array.isArray(ref)) {
     return evaluate([ref]);
   }
@@ -15,7 +15,7 @@ function lookup(ref) {
     switch(ref.value) {
      case 'def': return (name, value) => {
        console.log(name + ' -> ' + value);
-       scope[name] = value;
+       currentScope.register(name, value);
      };
      case '+': return (a, b, c, d) => {
        if(!b && !c && !d) {
@@ -29,19 +29,17 @@ function lookup(ref) {
        }
        return a + b + c + d;
      };
-     default:
-        if(scope[ref.value]) {
-          return scope[ref.value];
-        }
-        throw new Error('No such symbol: ' + ref.value);
+     default: return currentScope.resolve(ref.value)
+
     }
   }
 
 }
 
 function evaluate(p) {
+  const rootScope = scope();
   const results  = p.map(line => {
-    const [first, ...rest] = line.map(lookup);
+    const [first, ...rest] = line.map((line) => lookup(rootScope, line));
     return first.apply(this, rest);
   });
 
