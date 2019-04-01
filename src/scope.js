@@ -3,6 +3,7 @@ function scope(parent) {
 
   const me = {
     register: (symbol, value) => {
+      console.log(`${symbol} -> ${value}`);
       vals[symbol] = value;
     },
     resolve: (symbol) => {

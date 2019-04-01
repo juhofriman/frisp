@@ -10,7 +10,7 @@ describe('evaluator.js', () => {
     expect(evaluate([
       [
         {type: 'symbol', value: 'def'},
-        {type: 'symbol', value: '*x'},
+        {type: 'symbol', value: 'x'},
         {type: 'value', value: 1}
       ],
       [

@@ -57,6 +57,14 @@ function tokenize(source) {
       collector = '';
     }
   });
+  if(collector.length > 0) {
+      const tInt = parseInt(collector);
+      if(Number.isInteger(tInt)) {
+        tokenized.push({type: 'value', value: tInt});
+      } else {
+        tokenized.push({type: 'symbol', value: collector});
+      }
+  }
   return tokenized;
 }
 

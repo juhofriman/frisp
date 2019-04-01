@@ -20,6 +20,9 @@ describe('parser.js', () => {
 
   describe('tokenize', () => {
     it('should tokenize correctly', () => {
+      // this should work as well, important for REPL
+      expect(parser.tokenize('x')).toEqual([{ type: 'symbol', value: 'x' }]);
+      expect(parser.tokenize('42')).toEqual([{ type: 'value', value: 42 }]);
       expect(parser.tokenize('()')).toEqual(['(', ')']);
       expect(parser.tokenize('(foo)')).toEqual(['(', { type: 'symbol', value: 'foo' }, ')']);
       expect(parser.tokenize('(foo bar)')).toEqual(['(', { type: 'symbol', value: 'foo' }, { type: 'symbol', value: 'bar' }, ')']);

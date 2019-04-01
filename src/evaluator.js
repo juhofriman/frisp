@@ -41,6 +41,32 @@ function evaluate(p, currentScope) {
       currentScope = scope();
   }
   const results  = p.map(line => {
+    if(!Array.isArray(line)) {
+      if(line.type === 'symbol') {
+        return currentScope.resolve(line.value);
+      } else {
+        return line.value;
+      }
+    }
+    if(line[0].type === 'symbol' && line[0].value === 'def') {
+      if(Array.isArray(line[2])) {
+        currentScope.register(line[1].value, line[2]);
+      } else {
+        currentScope.register(line[1].value, line[2].value);
+      }
+
+      return null;
+    }
+    if(line[0].type === 'symbol' && line[0].value === 'fn') {
+      return (args) => {
+        console.log(args);
+        const fnScope = currentScope.child();
+        line[1].forEach((b, i) => {
+          fnScope.register(b.value, args);
+        });
+        return evaluate([line[2], args], fnScope);
+      };
+    }
     const [first, ...rest] = line.map((line) => lookup(currentScope, line));
     return first.apply(this, rest);
   });
