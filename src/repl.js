@@ -18,7 +18,7 @@ rl.on('close', () => {
 
 function prompt() {
 
-    rl.question('jsisp> ', (cmd) => {
+    rl.question('frisp> ', (cmd) => {
       try {
         if(cmd.startsWith('tokenize ')) {
           console.log(parser.tokenize(cmd.substring('tokenize '.length)));
@@ -38,7 +38,7 @@ function prompt() {
 }
 
 function intro() {
-  console.log(`THE JSISP REPL <${pjson.version}>`);
+  console.log(`THE FRISP REPL <${pjson.version}>`);
   console.log();
 }
 
