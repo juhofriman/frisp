@@ -50,24 +50,24 @@ function evaluate(p, currentScope) {
     }
     if(line[0].type === 'symbol' && line[0].value === 'def') {
       if(Array.isArray(line[2])) {
-        currentScope.register(line[1].value, line[2]);
+        currentScope.register(line[1].value, evaluate([line[2]], currentScope));
       } else {
         currentScope.register(line[1].value, line[2].value);
       }
 
-      return null;
+      return line[1].value;
     }
     if(line[0].type === 'symbol' && line[0].value === 'fn') {
-      return (args) => {
-        console.log(args);
+      return (...args) => {
         const fnScope = currentScope.child();
         line[1].forEach((b, i) => {
-          fnScope.register(b.value, args);
+          fnScope.register(b.value, args[i]);
         });
-        return evaluate([line[2], args], fnScope);
+        return evaluate([line[2]], fnScope);
       };
     }
-    const [first, ...rest] = line.map((line) => lookup(currentScope, line));
+    const x = line.map((line) => lookup(currentScope, line));
+    const [first, ...rest] = x;
     return first.apply(this, rest);
   });
 
