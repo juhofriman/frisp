@@ -69,6 +69,17 @@ describe('parser.js', () => {
               {type: 'value', value: 2, quoted: true}
             ]
           ]);
+
+        expect(parser.parse(parser.tokenize('(cons \'(1) 2')))
+          .toEqual([
+            [
+              {type: 'symbol', value: 'cons'},
+              [
+                {type: 'value', value: 1, quoted: true}
+              ],
+              {type: 'value', value: 2}
+            ]
+          ]);
         });
   });
 });

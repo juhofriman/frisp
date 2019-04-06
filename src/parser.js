@@ -14,7 +14,7 @@ function sliceParens(arr) {
   let rest = null;
   let balance = 0;
   for(var i = 1; i < arr.length; i++) {
-    if(arr[i] === '(') {
+    if(arr[i] === '(' || arr[i] === '\'(') {
       balance++;
     }
     if(arr[i] === ')') {
@@ -81,7 +81,7 @@ function parseRecursion(collector, rest, quote) {
   } else if(rest[0] === '\'(') {
     const [sub, restInThis] = sliceParens(rest);
     collector.push(parseRecursion([], sub, true))
-    return parseRecursion(collector, restInThis, true);
+    return parseRecursion(collector, restInThis, false);
   } else if(rest[0] === ')') {
     return collector;
   }

@@ -32,8 +32,15 @@ function lookup(currentScope, ref) {
        }
        return a + b + c + d;
      };
+     case '=': return (a, b) => a === b;
+     case 'cons': return (a, b) => {
+       a.push(b);
+       return a;
+     };
      case 'even?': return (a) => a % 2 === 0;
+     case 'zero?': return (a) => a === 0;
      case 'inc': return (a) => a + 1;
+     case 'dec': return (a) => a - 1;
      case 'map': return (pred, arr) => arr.map(pred);
      case 'filter': return (pred, arr) => arr.filter(pred);
      case 'reduce': return (pred, arr) => arr.reduce(pred);
@@ -84,7 +91,15 @@ function evaluate(p, currentScope) {
         }
       });
       return evaluate([line[2]], letScope);
+    }
 
+    if(line[0].type === 'symbol' && line[0].value === 'if') {
+      const t = evaluate([line[1]], currentScope);
+      if(t) {
+        return evaluate([line[2]], currentScope);
+      } else {
+        return evaluate([line[3]], currentScope);
+      }
     }
 
     const x = line.map((line) => lookup(currentScope, line));
