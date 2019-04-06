@@ -63,6 +63,9 @@ function evaluate(p, currentScope) {
         return line.value;
       }
     }
+    if(line.length === 0) {
+      return [];
+    }
     if(line[0].type === 'symbol' && line[0].value === 'def') {
       if(Array.isArray(line[2])) {
         currentScope.register(line[1].value, evaluate([line[2]], currentScope));
@@ -100,6 +103,10 @@ function evaluate(p, currentScope) {
       } else {
         return evaluate([line[3]], currentScope);
       }
+    }
+
+    if(line.length === 0) {
+      return [];
     }
 
     const x = line.map((line) => lookup(currentScope, line));
