@@ -1,22 +1,25 @@
 const scope = require('./scope');
 
+function paired(arr) {
+  const d = [];
+  for(var i = 0; i < arr.length; i = i + 2) {
+    d.push([arr[i], arr[i + 1] ? arr[i + 1] : null]);
+  }
+  return d;
+}
 
 function lookup(currentScope, ref) {
+
   if(Array.isArray(ref)) {
-    return evaluate([ref]);
+    return evaluate([ref], currentScope);
   }
+
   if(ref.type === 'value') {
     return ref.value;
   }
+
   if(ref.type === 'symbol') {
-    if(ref.value.startsWith('*')) {
-      return ref.value.substring(1);
-    }
     switch(ref.value) {
-     case 'def': return (name, value) => {
-       console.log(name + ' -> ' + value);
-       currentScope.register(name, value);
-     };
      case '+': return (a, b, c, d) => {
        if(!b && !c && !d) {
          return a;
@@ -65,6 +68,18 @@ function evaluate(p, currentScope) {
         });
         return evaluate([line[2]], fnScope);
       };
+    }
+    if(line[0].type === 'symbol' && line[0].value === 'let') {
+      const letScope = currentScope.child();
+      paired(line[1]).forEach(([ref, value]) => {
+        if(Array.isArray(value)) {
+          letScope.register(ref.value, evaluate([value], currentScope));
+        } else {
+          letScope.register(ref.value, value.value);
+        }
+      });
+      return evaluate([line[2]], letScope);
+
     }
     const x = line.map((line) => lookup(currentScope, line));
     const [first, ...rest] = x;

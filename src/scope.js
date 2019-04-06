@@ -2,6 +2,11 @@ function scope(parent) {
   const vals = {};
 
   const me = {
+    echo: () => {
+      for(k in vals) {
+        console.log(`${k} -> ${vals[k]}`);
+      }
+    },
     register: (symbol, value) => {
       // console.log(`${symbol} -> ${value}`);
       vals[symbol] = value;
