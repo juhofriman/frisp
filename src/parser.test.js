@@ -28,8 +28,8 @@ describe('parser.js', () => {
       expect(parser.tokenize('(foo bar)')).toEqual(['(', { type: 'symbol', value: 'foo' }, { type: 'symbol', value: 'bar' }, ')']);
       expect(parser.tokenize('(foo (+ 1 1) bar)'))
         .toEqual(['(', { type: 'symbol', value: 'foo' }, '(', { type: 'symbol', value: '+' }, { type: 'value', value: 1 }, { type: 'value', value: 1 }, ')', { type: 'symbol', value: 'bar' }, ')']);
-      // expect(parser.tokenize('(foo (+ 1 1) bar)'))
-      //   .toEqual(['(', 'foo', '(', '+', '1', '1', ')', 'bar', ')']);
+      expect(parser.tokenize('(list? \'(1 2))'))
+        .toEqual(['(', { type: 'symbol', value: 'list?' }, '\'(', { type: 'value', value: 1 }, { type: 'value', value: 2 }, ')', ')']);
     });
   });
 
@@ -59,5 +59,16 @@ describe('parser.js', () => {
             ]
           ]);
       });
+
+      it('Should quote', () => {
+
+        expect(parser.parse(parser.tokenize('\'(1 2)')))
+          .toEqual([
+            [
+              {type: 'value', value: 1, quoted: true},
+              {type: 'value', value: 2, quoted: true}
+            ]
+          ]);
+        });
   });
 });

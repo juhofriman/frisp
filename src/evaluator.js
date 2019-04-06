@@ -32,6 +32,11 @@ function lookup(currentScope, ref) {
        }
        return a + b + c + d;
      };
+     case 'even?': return (a) => a % 2 === 0;
+     case 'inc': return (a) => a + 1;
+     case 'map': return (pred, arr) => arr.map(pred);
+     case 'filter': return (pred, arr) => arr.filter(pred);
+     case 'reduce': return (pred, arr) => arr.reduce(pred);
      default: return currentScope.resolve(ref.value)
 
     }
@@ -81,9 +86,15 @@ function evaluate(p, currentScope) {
       return evaluate([line[2]], letScope);
 
     }
+
     const x = line.map((line) => lookup(currentScope, line));
+    if(line[0].quoted) {
+      return x;
+    }
     const [first, ...rest] = x;
+
     return first.apply(this, rest);
+
   });
 
   return results[results.length - 1];

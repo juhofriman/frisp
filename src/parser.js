@@ -7,7 +7,7 @@ function paired(arr) {
 }
 
 function sliceParens(arr) {
-  if(arr[0] !== '(') {
+  if(arr[0] !== '(' && arr[0] !== '\'(') {
     throw new Error('Invalid popping position: ' + arr);
   }
   const collector = [];
@@ -41,7 +41,8 @@ function tokenize(source) {
       return;
     }
     if(character === '(' || character === ')') {
-      tokenized.push(character);
+      collector += character;
+      tokenized.push(collector);
       collector = '';
       return;
     }
@@ -68,7 +69,7 @@ function tokenize(source) {
   return tokenized;
 }
 
-function parseRecursion(collector, rest) {
+function parseRecursion(collector, rest, quote) {
   if(!rest || rest.length === 0) {
     return collector;
   }
@@ -76,18 +77,26 @@ function parseRecursion(collector, rest) {
   if(rest[0] === '(') {
     const [sub, restInThis] = sliceParens(rest);
     collector.push(parseRecursion([], sub))
-    return parseRecursion(collector, restInThis);
+    return parseRecursion(collector, restInThis, false);
+  } else if(rest[0] === '\'(') {
+    const [sub, restInThis] = sliceParens(rest);
+    collector.push(parseRecursion([], sub, true))
+    return parseRecursion(collector, restInThis, true);
   } else if(rest[0] === ')') {
     return collector;
   }
+  if(quote) {
+    collector.push(Object.assign(rest[0], { quoted: true }));
+  } else {
+    collector.push(rest[0]);
+  }
 
-  collector.push(rest[0]);
-  return parseRecursion(collector, rest.slice(1));
+  return parseRecursion(collector, rest.slice(1), quote);
 
 }
 
 function parse(tokenStream) {
-  return parseRecursion([], tokenStream);
+  return parseRecursion([], tokenStream, false);
 }
 
 module.exports = {
