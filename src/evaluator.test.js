@@ -58,4 +58,20 @@ describe('evaluator.js', () => {
         ]
       ])).toEqual(6);
     });
+
+    it('Should support let bindings', () => {
+      /*
+      (let (a 1) a)
+      */
+      expect(evaluate([
+        [
+          {type: 'symbol', value: 'let'},
+          [
+            {type: 'symbol', value: 'a'},
+            {type: 'value', value: 1}
+          ],
+          {type: 'symbol', value: 'a'}
+        ]
+      ])).toEqual(1);
+    });
 });
