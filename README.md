@@ -4,6 +4,8 @@ Frisp is a from scratch made LISP evalutor built on top of Javascript. It has ze
 
 Frisp is a LISP intepreter, it does not (at least currently) transpile to javascript.
 
+At this stage `0.0.1` frisp uses javascript functions pretty much directly. Next iterations should bring more lispian way of constructing most of the language with frisp itself.
+
 ## Running
 
 Clone repository and
