@@ -46,3 +46,5 @@ frisp> (fibonacci 10 '() 1 0)
 No docs yet ;)
 
 `+, -, zero?, map, let, cons...`
+
+You know, the basic LISP stuff.
